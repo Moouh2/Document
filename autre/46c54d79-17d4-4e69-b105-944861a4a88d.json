@@ -1,0 +1,121 @@
+{
+  "TechProfile": {
+    "email": "metraphirielle@gmail.com",
+    "locale": "fr-fr",
+    "country": "SN",
+    "contactPointTopicSetting": "OptInExplicit",
+    "isInstructor": false,
+    "isChallengeAdmin": false,
+    "isQnaModerator": false,
+    "source": "learn",
+    "authenticationModes": [
+      {
+        "id": "00037FFE14952383",
+        "type": "MSA",
+        "tenantId": "9188040d-6c67-4c5b-b112-36a304b66dad",
+        "upn": "metraphirielle@gmail.com",
+        "oid": "00000000-0000-0000-8482-b4e1e8e7fc75",
+        "dateAcceptedPrivacyNotice": "2025-07-18T23:10:47.5404468+00:00",
+        "dateAdded": "2025-07-18T23:10:47.5404468+00:00"
+      }
+    ],
+    "transcriptSettings": {
+      "publicLink": {
+        "showModules": true,
+        "showLegalName": true,
+        "showMCID": true,
+        "showContactEmail": true
+      },
+      "print": {
+        "showModules": true,
+        "showLegalName": true,
+        "showMCID": true,
+        "showContactEmail": true
+      }
+    },
+    "certificationSettings": {
+      "print": {
+        "showLegalName": true,
+        "showMCID": true,
+        "showContactEmail": true
+      }
+    },
+    "qnaEmailPreferences": {
+      "allEmail": true,
+      "autoFollowAsked": true,
+      "autoFollowAnswered": true,
+      "autoFollowCommented": true,
+      "autoFollowTagged": false,
+      "emailEventSettings": {
+        "newMention": "instant",
+        "newModeration": "instant",
+        "answerPosted": "instant",
+        "answerAccepted": "instant",
+        "commentPosted": "instant",
+        "newPrivateMessage": "instant",
+        "questionUpdated": "instant",
+        "questionPosted": "off",
+        "unansweredQuestions": "daily",
+        "newFollower": "instant",
+        "answerUpdated": "instant"
+      }
+    },
+    "sharingId": "6DB1EEF355A984A",
+    "legalName": {
+      "first": "Metra Phirielle",
+      "middle": "",
+      "last": "Vandjy Boundzanga"
+    },
+    "userId": "46c54d79-17d4-4e69-b105-944861a4a88d",
+    "userName": "MetraPhirielleVANDJYBOUNDZANGA-5234",
+    "displayName": "Metra Phirielle VANDJY BOUNDZANGA",
+    "isPrivate": false,
+    "affiliations": [],
+    "followerCount": 0,
+    "followingCount": 0,
+    "answersAccepted": 0,
+    "reputationPoints": 0,
+    "createdOn": "7/18/2025 11:10:47 PM"
+  },
+  "Attachments": true,
+  "NextSteps": null,
+  "Q&A": {
+    "docsId": "46c54d79-17d4-4e69-b105-944861a4a88d",
+    "questions": [],
+    "answers": [],
+    "comments": []
+  },
+  "Progress": null,
+  "VerifiableCredentials": {
+    "docsId": "46c54d79-17d4-4e69-b105-944861a4a88d",
+    "userCredentials": []
+  },
+  "XP": {
+    "xp": {
+      "docsId": "46c54d79-17d4-4e69-b105-944861a4a88d",
+      "totalXp": 0,
+      "currentLevel": 1,
+      "currentLevelLow": 0,
+      "currentLevelHigh": 1799,
+      "currentLevelPointsEarned": 0,
+      "nextLevel": 2,
+      "pointsUntilNextLevel": 1800,
+      "achievementCategories": {
+        "Unknown": 0,
+        "Modules": 0,
+        "Courses": 0,
+        "Qna": 0,
+        "Challenges": 0,
+        "Events": 0,
+        "LearningPaths": 0,
+        "Plans": 0,
+        "Special": 0
+      }
+    },
+    "achievements": []
+  },
+  "Certifications": null,
+  "Assessments": null,
+  "SkillAssessment": null,
+  "Lists": null
+}
