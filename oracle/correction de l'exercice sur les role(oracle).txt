@@ -1,0 +1,83 @@
+Exercice
+
+1. Connecter en tant qu’administrateur et créer deux utilisateur c##user1 et c##user2
+	*sys as sysdba
+	*mdp
+	*Create user c##user1 Identified by user1;
+	*Create user c##user2 Identified by user2;
+
+2. Créer un rôle pour chaque utilisateur (c##inf, c##com).
+	*create role c##inf;
+	*create role c##com;
+
+3. Le rôle c##inf attribué à l’utilisateur c##user1 lui permettra de se connecter, de créer des tables.
+	-on accorde d'abord les privilèges au role c##inf avant de l'attribué à c##user1
+		* set role c##inf; (pour ouvrir le role)
+		*grant connect, create table to c##inf;
+		*grant c##inf to c##user1;	
+
+4. Le rôle c##com attribué à l’utilisateur c##user2 lui permettra de se connecter, de créer des tables, et de créer des tables dans n’importe quel schéma. 
+-on accorde d'abord les privilèges au role c##com avant de l'attribué à c##user1
+		* set role c##com; (pour ouvrir le role)
+		*grant connect, create any table to c##com;
+		*grant c##inf to c##user2;
+
+5. connecter d’abord en tant que c##user2 et créer les tables suivantes: table eleve(idEleve, prenom, nom, dateNaissance).dans le schéma c##user1:créer les tables client, produit et commande dans son propre schéma. 
+	-on part sur le cmd
+ 		*sqlplus/nolog
+		*connect c##user2;
+		*mdp
+		*create table c##user1.eleve(idEleve int, prenom varchar(30), nom varchar(30), datenaiss date, constraint pk_eleve primary key(idEleve));
+		*create table Client(idclient int, prenom varchar(30), nom varchar(30), telephone int, constraint pk_client primary key(idclient));
+		*Create table Produit(idProduit int, nomProduit varchar(30),quantite int,prix number(10,3),constraint pk_produit primary key(idProduit));
+		*create table Commande(
+				idCommande INT,
+				dateCommande DATE,
+				montantTotal NUMBER(10, 2),
+				statut VARCHAR(20),
+    				modePaiement VARCHAR(20),
+    				adresseLivraison VARCHAR(255),
+    				quantite INT,
+				idClient INT,
+				idProduit INT,
+				constraint pk_Commande primary key(idCommande), 
+				FOREIGN KEY (idClient) REFERENCES Client(idClient),
+    				FOREIGN KEY (idProduit) REFERENCES Produit(idProduit));
+6. Augmenter le quota du tablespace users ou attribuer à un tablespace illimité à l’utilisateur c##user1 pour insérer des données dans sa table eleve créée
+par c##user2. 
+	*alter user c##user1 quota unlimited on users; ou ALTER USER c##user1 QUOTA 100M ON USERS;
+	*GRANT INSERT ON c##user2.eleve TO c##user1;
+
+7. NB : Les clés des tables eleve, produit et client sont auto incréments
+	*CREATE SEQUENCE idEleve START WITH 1;
+	*CREATE SEQUENCE idProduit START WITH 1;
+	*CREATE SEQUENCE idClient START WITH 1;
+
+8. Connecter l’utilisateur 1 pour attribuer le privilége de sélection dans sa table éleve à l’utilisateur 2 qu’il a la possibilité de retransmettre. 
+	*grant select on eleve to c##user2;
+
+9. Créer en tant que admin et créer l’utilisateur c##user3 et de lui attribuer le privilége de se connecter.
+	*Create user c##user3 Identified by user3;
+	* grant connect to c##user3;
+
+10. Connecter en tant que c##user2 pour sélectionner les éléments de la table eleve.
+	*select * from c##user1.eleve;
+ Ensuite donner le privilége de sélectionner dans la table eleve à
+l’utilisateur c##user3. 
+	grant select on c##user1.eleve to c##user3
+
+11. Vérifier les priviléges attribués par l’utilisateur c##user2. 
+	*SELECT PRIVILEGE
+	FROM ALL_TAB_PRIVS ou USERS_TAB_PRIVS
+	WHERE GRANTEE = 'C##USER2';
+
+12. Connecter en tant que admin et vérifier les rôle attribuer aux utilisateurs C##USER1 et C##USER2
+	*-- Rôles attribués à c##user1
+SELECT GRANTED_ROLE
+FROM DBA_ROLE_PRIVS
+WHERE GRANTEE = 'C##USER1';
+
+-- Rôles attribués à c##user2
+SELECT GRANTED_ROLE
+FROM DBA_ROLE_PRIVS
+WHERE GRANTEE = 'C##USER2';

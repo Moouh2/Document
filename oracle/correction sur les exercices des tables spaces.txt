@@ -1,0 +1,60 @@
+Exercice 
+
+-- Accorder le privilège de création de tablespaces à un utilisateur spécifique
+	*GRANT CREATE TABLESPACE TO votre_utilisateur;
+
+
+1)Créez un tablespace appelé "users_data" avec un fichier de données nommé "users_data01.dbf" de taille 100 Mo et auto-extendable jusqu'à 200 Mo.
+	-- Création du tablespace "users_data"
+	*CREATE TABLESPACE users_data DATAFILE 'C:\Metra\Oracle\users_data01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M MAXSIZE 200M;
+											EXTENT MANAGEMENT LOCAL AUTOLLOCATE;
+											EXTENT MANAGEMENT LOCAL UNIFORM SIZE128K;
+
+2)Créez un utilisateur appelé mon_utilisateur avec le mot de passe correspondant.
+	-- Création de l'utilisateur
+	*CREATE USER mon_utilisateur IDENTIFIED BY votre_mot_de_passe;
+
+-Attribution du quota illimité sur le tablespace "users_data" à l'utilisateur mon_utilisateur.
+	-- Attribution du quota illimité sur le tablespace "users_data" à l'utilisateur mon_utilisateur
+	*ALTER USER mon_utilisateur QUOTA UNLIMITED ON users_data;
+
+3)Modifiez le tablespace "users_data" pour ajouter un fichier de données supplémentaire appelé "users_data02.dbf" de taille 50 Mo.
+	-- Ajout d'un fichier de données supplémentaire au tablespace "users_data"
+	*ALTER TABLESPACE users_data ADD DATAFILE 'users_data02.dbf' SIZE 50M;
+
+4)Créez une nouvelle table "ma_table" dans le tablespace "users_data".
+	-- Création de la table "ma_table" dans le tablespace "users_data"
+	*CREATE TABLE users_data.ma_table (col1 NUMBER);
+
+-Déplacez la table "ma_table" vers un nouveau tablespace appelé "nouveau_data".
+	-- Déplacement de la table "ma_table" vers le tablespace "nouveau_data"
+	*ALTER TABLE users_data.ma_table MOVE TABLESPACE nouveau_data;
+
+5)Supprimez le tablespace "nouveau_data" et ses fichiers de données associés.
+	-- Suppression du tablespace "nouveau_data" et de ses fichiers de données
+	*DROP TABLESPACE nouveau_data INCLUDING CONTENTS AND DATAFILES;
+
+6)Consultez les informations sur tous les tablespaces de la base de données.
+	-- Consultation des informations sur tous les tablespaces
+	*SELECT tablespace_name, file_name, bytes FROM dba_data_files;
+
+7)Modifiez le tablespace "users_data" pour augmenter la taille d'auto-extension à 300 Mo.
+	-- Modification de la taille d'auto-extension du tablespace "users_data"
+	*ALTER TABLESPACE users_data AUTOEXTEND ON NEXT 100M MAXSIZE 300M;
+
+8)Créez un tablespace temporaire appelé "temp_data" avec un fichier temporaire de taille 50 Mo.
+	-- Création du tablespace temporaire "temp_data"
+	*CREATE TEMPORARY TABLESPACE temp_data TEMPFILE 'temp_data01.dbf' SIZE 50M;
+
+-Attribution du tablespace temporaire "temp_data" à l'utilisateur mon_utilisateur.
+	-- Attribution du tablespace temporaire "temp_data" à l'utilisateur mon_utilisateur
+	*ALTER USER mon_utilisateur TEMPORARY TABLESPACE temp_data;
+
+9)Consultez l'utilisation de l'espace dans tous les tablespaces de la base de données.
+	-- Consultation de l'utilisation de l'espace dans tous les tablespaces
+	*SELECT tablespace_name, file_name, bytes, bytes - free_space AS used_space
+	*FROM dba_data_files;
+
+10)Ajoutez un nouveau fichier de données "users_data03.dbf" de taille 75 Mo au tablespace "users_data".
+	-- Ajout d'un nouveau fichier de données au tablespace "users_data"
+	*ALTER TABLESPACE users_data ADD DATAFILE 'users_data03.dbf' SIZE 75M;

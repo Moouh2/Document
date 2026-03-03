@@ -1,0 +1,146 @@
+1)Pour créér un utilisateur:
+-create user c##udb1 identified by udb1(mdp);
+
+2)Pour avoir l'ensemble des utilisateurs:
+-select username from all_users;
+
+3)Au niveau du CMD:
+-sqlplus/nolog
+-connect sys as sysdba
+	Entrez le mot de passe :
+
+ou:
+-connect c##udb1
+	Entrez le mot de passe :
+ConnectÚ.
+
+4)Pour donné le privilège à l'utilisateur de créér sa session:
+-grant create session to c##udb1;
+
+5)Pour voir les instances de connexion:
+- show pdbs;
+
+ce qu'on voit:
+	 CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 ORCLPDB                        MOUNTED
+
+6)Pour voir le conteneur root sur lequel on est connecté:
+- show con_name;
+
+ce qu'on voit:
+	CON_NAME
+------------------------------
+CDB$ROOT
+
+
+7)Pour retirer les droit
+-revoke create session from c##udb1;
+
+8)Pour donner la possibilité de donner l'utilisateur de changer son mdp après expiration:
+ -create user c##udb2 identified by udb2 password expire;
+
+9)Pour bloqué un compte:
+- alter user c##udb1 account lock;
+
+
+10)Pour débloqué un compte:
+- alter user c##udb1 account unlock;
+
+11)Pour se déconnecter:
+-disconnect;
+
+12)Pour se connect dans le conteneur ORCLPDB:
+-alter session set container=ORCLPDB;
+
+13Pour savoir l'état de la base de donnée:
+- select open_mode from v$database;
+
+ce qu'on voit:
+OPEN_MODE
+--------------------
+MOUNTED
+
+14)Pour ouvrir la base de donnée:
+-alter database open;
+
+15)Lorsqu'on est sur le conteneur ORCLPDB, on peut créer un utilisateur sans utilisé C##
+- create user udb3 identified by udb3;
+
+16)Après il faut se connecter avec la commande:
+-sqlplus udb3/udb3@127.0.0.1:1521/ORCLPDB (ici il faudra d'abord mettre dans le lister qui dans le dossier d'installation ou y a l'@ 127.0.0.1 ou bien localhost)
+-puis mettre le mot de passe
+
+17)Pour changer le mot de passe:
+-alter user udb3 identified by udb3;
+
+18)Pour supprimer un utilisateur
+-drop user udb4;
+
+19)Pour supprimer un utilisateur qui a plusieur objet:
+-drop user udb4 cascade;
+
+20)Pour connaitre les iformations sur les users en attaque en faisant:
+-desc dba_users;
+
+21)Pour connaitre les informations sur les quotas en attaque en faisant:
+-desc dba_ts_quotas;
+
+22)Pour voir les tables spaces de chaque utilisateur(users):
+-select username, tablespace_name from  dba_ts_quotas;
+
+23)Pour voir les utilisateur de dba_users:
+-select username from dba_users;
+
+24)Pour créér des tables:
+-CREATE TABLE Client(idclient int, prenom varchar(30), nom varchar(30), telephone int, constraint pk_client primary key(idclient));
+
+25)Pour donner des privilèges a un utilisateur pour créér les tables:
+-grant create table to c##udb1;
+
+26)Pour créér des séquences:
+-CREATE SEQUENCE idclient START WITH 1;
+
+27)Pour donner des privilèges a un utilisateur pour créér des séquences:
+-grant create sequence to c##udb1;
+
+28)Pour inserer un client :
+-insert into Client values(idclient.nextval,'Moussa','DIOP',773878285);
+
+29)Pour donner des privilÞges sur le tablespace 'USERS' a un utilisateur pour inserer des clients:
+-alter user c##udb1 quota unlimited on users;
+
+30)Pour retirer un privilège à un utilisateur:
+-revoke create table from c##udb1;
+
+31)Pour créér des fichiers de journalisation et ajouté ça dans un groupe:
+-alter database add logfile ('chemin_du_fichier_dans_le_c/log1.rdo','chemin_du_fichier_dans_le_c/log3.rdo'?'chemin_du_fichier_dans_le_c/log3.rdo') size 1000K;
+
+32)Pour renommer un fichier à un autre:
+-move 'chemin_du_fichier_dans_le_c/log1.rdo' 'chemin_du_fichier_dans_le_c/log4.rdo';
+ou
+-alter database rename file 'chemin_du_fichier_dans_le_c/log2.rdo' to 'chemin_du_fichier_dans_le_c/log5.rdo';
+
+33)Pour changer la taille d'un fichier:
+-alter database add logfile group 5 'chemin_du_fichier_dans_le_c/log1.rdo' size 120M reuse;
+
+34)Pour voir les membre d'un groupe:
+-select group#,member from v$logfile;
+
+35)Pour supprimer un groupe:
+-alter database drop logfile group4;
+
+36)Pour forcer un fichier à s'activé:
+-alter system switch logfile;
+
+37)Pour arreté tous les processus en marche et en cours de marche:
+-shutdown immediate;
+ou
+-sutdown force;
+
+38)Pour monter la base de donnée:
+-startup mount;
+
+39)Pour démonter la base de donnée
+-startup nomount;

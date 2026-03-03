@@ -1,0 +1,30 @@
+I-Exercice(les vues)
+
+1) créer une vue dans le schéma c##user1 pour récuperer toutes les colonnes de la table élève
+	*grant create view to c##user1;
+	* create view v_eleve as (select * from eleve);
+2) créer une vue dans le schéma c##user2 pour récuperer le prénom,nom,dateCommande,idClient
+	*grant create view to c##user2;
+	*create view v_clientcommande as (select c.idclient, prenom,nom from client c, commande com where c.idclient=com.idclient);
+
+
+
+II-Exercice(les synonymes)
+
+1)
+	*create table formation(codeform int, nomForm varchar(25), constraint pk_formation primary key(codeForm);
+	*create table etudiant(matricule int, prenom varchar(30), nom varchar(30), adresse varchar(25), telephone int, code, constraint pk_etudiant primary key(matricule),
+constraint fk_formation foreign key(code) references formation(codeform);
+
+2)
+	*
+	*
+
+3)
+	* create view v_etudiantformation as select(prenom,nom,nomform from etudiant e, formation where e.code =f.codeform);
+
+4)
+	*create synonym sysn for v_etudiantformation ;
+
+5)Ent tant que c##user1,
+	*grant select on syn to c##user2;

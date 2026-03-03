@@ -1,0 +1,35 @@
+Exercice
+
+1. Suivant les utilisateurs créés précédemment, créez trois profiles que vous allez attribuer aux utilisateurs C##user1,
+C##user2, C##user3. 
+	*create user C##user1 identified by user1;
+	*create user C##user2 identified by user2;
+	*create user C##user3 identified by user3;
+
+2. Le nom des profiles (C##profileUser1, C##profileUser2, C##profileUser3)
+	*create profile C##profileUser1 limit failed_login_attemps 5 password_lock_time 2 password_grace_time 10
+	password_life_time 200 sessions_per_user 1 connect_time 20 idle_time 15;
+	*create profile C##profileUser2 limit failed_login_attemps 5 password_lock_time 2 password_grace_time 10
+	password_life_time 200 sessions_per_user 1 connect_time 20 idle_time 15;
+	*create profile C##profileUser3 limit failed_login_attemps 5 password_lock_time 2 password_grace_time 10
+	password_life_time 200 sessions_per_user 1 connect_time 20 idle_time 15;
+
+3. Pour le profile C##profileUser1, mettez les ressources suivantes : un nombre de tentative limité à 5, le nombre de
+jours pour le verrouillage du compte à 2, nombre de jours pour envoyer un avertissement du fin de mot de passe à 10,
+le nombre de jours d’utilisation du compte utilisateur 200 jours, nombre de sessions active à 1, indique la limite de
+temps total écoulé pour une session utilisateur à 20 mn, indique le nombre de minutes autorisées pour les périodes
+d'inactivité continue au cours d'une session. 
+	*create profile C##profileUser1 limit failed_login_attemps 5 password_lock_time 2 password_grace_time 10
+	password_life_time 200 sessions_per_user 1 connect_time 20 idle_time 15;
+	* alter user C##User1 profile C##profileUser1;
+
+4. Afficher les profiles attribués par les trois utilisateurs. 
+	*select username, profile from dba__users where username='C##USER1' or username='C##USER2' or username='C##USER3';
+
+5. afficher les ressources dans chaque profile.
+	* select ressource_name, limit fromdba.profiles where profile='C##PROFILEUSER1';
+	* select ressource_name, limit fromdba.profiles where profile='C##PROFILEUSER2';
+	* select ressource_name, limit fromdba.profiles where profile='C##PROFILEUSER3';
+
+6. Supprimer le profile de l’utilisateur C##User1
+	*drop profile C##profileUser1 cascade; après l’utilisateur C##User1 prendra le profile par défaut.

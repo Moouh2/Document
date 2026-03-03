@@ -1,0 +1,35 @@
+I-Exercice(les vues)
+
+1) créer une vue dans le schéma c##user1 pour récuperer toutes les colonnes de la table élève
+	*grant create view to c##user1;
+	* create view v_eleve as (select * from eleve);
+2) créer une vue dans le schéma c##user2 pour récuperer le prénom,nom,dateCommande,idClient
+	*grant create view to c##user2;
+	*create view v_clientcommande as (select c.idclient, prenom,nom from client c, commande com where c.idclient=com.idclient);
+
+
+
+II-Exercice(les synonymes)
+
+1)Créer dans le schéma C##user1 deux tables etudiant et formation avec :
+• etudiant(matricule, prenom, nom, adresse, telephone, sexe,#codeForm) et formation(codeForm,
+nomForm)
+	*create table formation(codeform int, nomForm varchar(25), constraint pk_formation primary key(codeForm);
+	*create table etudiant(matricule int, prenom varchar(30), nom varchar(30), adresse varchar(25), telephone int, code, constraint pk_etudiant primary key(matricule),
+	constraint fk_formation foreign key(code) references formation(codeform);
+	*create sequence idForm start with 1;
+	*create sequence matricule start with 1;
+
+2) Remplissez quelques lignes dans les tables etudiants et formations en respectant les contrainte
+	*insert into formation(idForm.nextval,'informatique');
+	*insert into etudiant (matricule.nextval,'françois','BAH','grand_yoff',783878284,1);
+
+3) Créér une vue pour stocker les informations des étudiants et de la formation en prenant en comme les données
+(prenom, nom, et nom formation
+	* create view v_etudiantformation as select(prenom,nom,nomform from etudiant e, formation where e.code =f.codeform);
+
+4) Créer un synonyme dans cette vue nouvellement créée.
+	*create synonym sysn for v_etudiantformation ;
+
+5)En tant que c##user1, donné le privilége de sélection dans le sysnonym crée à l’utilisateur c##user2
+	*grant select on syn to c##user2;

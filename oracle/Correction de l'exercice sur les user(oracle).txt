@@ -1,0 +1,63 @@
+1) Connectez en tant qu'utilisateur SYS. Créez deux utilisateurs (un utilisateur udb1 dans le conteneur CDBSROOT et un utilisateur udb2 dans le conteneur ORCLPDB).
+
+-Niveau du conteneur CDBSROOT
+	*create user c##udb1 identified by udb1;
+
+-Niveau du conteneur ORCLPDB
+	-Il faut d'abord changer de conteneur:
+		*alter session set container = ORCLPDB;
+		*create user udb2 identified by udb2;
+	-Puis lui donner des privilèges:
+		*grant create session to udb2;
+		*grant create table to udb2;
+		*grant create sequence to udb2;
+
+2) Créer la table CLIENT(idclient,prenom,nom,telephone) avec un idClient auto incrémental. Cette table est créée par l'utilisateur udb1
+-Le conteneur attribut d'abord les privilèges à udb1:
+	*grant create session to c##udb1;
+	*grant create table to c##udb1;
+	*grant create sequence to c##udb1;
+-Puis on part sur le cmd pour se connecter en tant que udb1
+	*sqlplus/nolog;
+	*connect c##udb1; puis tu mets le mot de passe
+	*create table Client(idclient int, prenom varchar(30), nom varchar(30), telephone int, constraint pk_client primary key(idclient));
+-Puis on crée une auto incrémental:
+	*CREATE SEQUENCE idclient START WITH 1;
+
+3) Créer deux tables PRODUIT(idProduit,nomProduit,quantité,prix,#idCat) et la table CATEGORIE(idCat,nomCat,description) appartenant à udb2
+-Se connecter d'abord sur le cmd en mode administrateur
+	*lsnrctl status; (pour regarder le status du listener)
+	*lsnrctl start; (pour mettre en marche le listener)
+	*lsnrctl stop; (au cas ou tu veux fermer le listener)
+-Puis se connecter sur un autre cmd normal
+	*sqlplus udb2/udb2@127.0.0.1:1521/ORCLPDB (on peut remplacer le 127.0.0.1 par le nom de notre machine si on veut)
+	*CREATE TABLE Categorie(idCat int, nomCat varchar(30), description varchar(30), constraint pk_categorie primary key(idCat));
+	*CREATE SEQUENCE idCat START WITH 1;
+	*CREATE TABLE Produit(idProduit int, nomProduit varchar(30),quantite int,prix number(10,3), idCat int, constraint pk_produit primary key(idProduit), constraint pk_idCat foreign key (idCat) references categorie(idCat));
+	*CREATE SEQUENCE idProduit START WITH 1;
+
+4)Remplissez les deux tables PRODUITS et CATEGORIE par udb2
+-Au vu de la question 3,on est déjà connecté en udb2
+	*insert into Categorie values(idCat.nextval,'legume','pour');
+	*insert into Produit values(idProduit.nextval,'mangue',2,10,2);
+
+5) Connecter en tant que SYS et attribuer le privilège aux utilisateurs le privilège de créer les tables, de sequence
+-Déjà fait en question 1 et 2
+
+6) En tant que SYS, créer un troisième utilisateur nommé udb3 (moi je l'ai créée avec SYS du conteneur ORCLPDB)
+
+7) Connecter en tant que udb2, attribue le privilège de selection dans la table CATEGORIE à udb1 de telle sort qu'il peut aussi attribuer se droit de selection
+	*grant select on Categorie to udb1 with grant option;
+
+8) Connecter en tant que udb1,il doit permettre à udb3 d'inserer dans la table CLIENT
+	*grant insert on CLIENT to udb3;
+
+9) Connecter en tant que udb1,il doit permettre à udb3 de faire une selection dans la table CATEGORIE
+	*grant select on udb2.Categorie to udb3;
+
+10) User udb3,lister les informations de la table CATEGORIE
+	*select * from udb2.Categorie;
+
+11) User udb2,retirer le privilège de sélection à udb3 et dites nous ce que vous constatez
+	*revoke select on Categorie from udb3;
+	*On constate qu'il ne peut pas retirer le droit parce que c'est pas udb2 qu'il lui a donné ce droit mais udb1, c'est lui qui peut retirer ce droit à udb3

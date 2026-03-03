@@ -1,0 +1,60 @@
+Exercice : Assurez-vous d'être connecté en tant qu'utilisateur disposant des privilèges d'administration nécessaires
+table SYS.AUD$
+
+-- Accorder le privilège d'audit des objets
+	*GRANT AUDIT ANY TO votre_utilisateur;
+
+-- Accorder le privilège d'audit de session
+	*GRANT AUDIT CREATE SESSION TO votre_utilisateur;
+
+-- Accorder le privilège d'audit des modifications de privilèges
+	*GRANT AUDIT ALTER, AUDIT DROP, AUDIT CREATE ANY, AUDIT DROP ANY, AUDIT GRANT ANY PRIVILEGE TO votre_utilisateur;
+
+-- Accorder le privilège d'audit d'accès aux objets sur une autre table
+	*GRANT AUDIT SELECT, AUDIT INSERT, AUDIT UPDATE, AUDIT DELETE ON votre_schema.votre_table TO votre_utilisateur;
+
+
+
+1)Activez l'audit des opérations SELECT, INSERT, UPDATE et DELETE sur la table "ma_table" du schéma "mon_schema" pour l'utilisateur c##user1.
+	-- Activation de l'audit pour c##user1 sur la table ma_table du schéma mon_schema
+	*AUDIT SELECT, INSERT, UPDATE, DELETE ON mon_schema.ma_table BY c##user1;
+
+2)Désactivez l'audit des opérations SELECT, INSERT, UPDATE et DELETE sur la table "ma_table" du schéma "mon_schema" pour l'utilisateur c##user1.
+	-- Désactivation de l'audit pour c##user1 sur la table ma_table du schéma mon_schema
+	*NOAUDIT SELECT, INSERT, UPDATE, DELETE ON mon_schema.ma_table BY c##user1;
+
+3)Consultez les informations sur les événements actuellement audités dans la base de données.
+	-- Consultation des événements actuellement audités
+	*SELECT * FROM DBA_AUDIT_TRAIL;
+			DBA_FGA_AUDIT_TRAIL;
+
+4)Consultez les enregistrements d'audit pour les opérations effectuées par l'utilisateur c##user1 sur la table "ma_table" du schéma "mon_schema".
+	-- Consultation des enregistrements d'audit pour c##user1 sur la table ma_table
+	*SELECT * FROM DBA_AUDIT_OBJECT WHERE USERNAME = 'C##USER1' AND OBJECT_NAME = 'MA_TABLE';
+
+5)Activez l'audit de session pour l'utilisateur c##user2.
+	-- Activation de l'audit de session pour c##user2
+	*AUDIT SESSION BY c##user2;
+
+6)Désactivez l'audit de session pour l'utilisateur c##user2.
+	-- Désactivation de l'audit de session pour c##user2
+	*NOAUDIT SESSION BY c##user2;
+
+7)Activez l'audit des modifications de privilèges pour l'utilisateur c##user1.
+	-- Activation de l'audit des modifications de privilèges pour c##user1
+	*AUDIT ALTER, DROP, CREATE ANY, DROP ANY, GRANT ANY PRIVILEGE BY c##user1;
+
+8)Consultez les enregistrements d'audit pour les opérations effectuées sur la table "ma_table" du schéma "mon_schema" dans une plage de dates spécifique.
+	-- Consultation des enregistrements d'audit pour la table ma_table du schéma mon_schema
+	-- dans une plage de dates spécifique (remplacez les dates par vos valeurs)
+	*SELECT * FROM DBA_AUDIT_OBJECT
+	*WHERE OBJECT_NAME = 'MA_TABLE'
+	*AND TIMESTAMP BETWEEN TO_DATE('2023-01-01', 'YYYY-MM-DD') AND TO_DATE('2023-12-31', 'YYYY-MM-DD');
+
+9)Supprimez tous les enregistrements d'audit pour l'utilisateur c##user1 sur la table "ma_table" du schéma "mon_schema".
+	-- Suppression des enregistrements d'audit pour c##user1 sur la table ma_table
+	*DELETE FROM DBA_AUDIT_OBJECT WHERE USERNAME = 'C##USER1' AND OBJECT_NAME = 'MA_TABLE';
+
+10)Désactivez l'audit au niveau de la base de données.
+	-- Désactivation de l'audit au niveau de la base de données
+	*NOAUDIT ALL;

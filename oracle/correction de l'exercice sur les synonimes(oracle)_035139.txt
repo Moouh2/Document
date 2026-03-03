@@ -1,0 +1,19 @@
+Exercice
+
+1)
+	*create table formation(codeform int, nomForm varchar(25), constraint pk_formation primary key(codeForm);
+	*create table etudiant(matricule int, prenom varchar(30), nom varchar(30), adresse varchar(25), telephone int, code, constraint pk_etudiant primary key(matricule),
+constraint fk_formation foreign key(code) references formation(codeform);
+
+2)
+	*
+	*
+
+3)
+	* create view v_etudiantformation as select(prenom,nom,nomform from etudiant e, formation where e.code =f.codeform);
+
+4)
+	*create synonym sysn for v_etudiantformation ;
+
+5)Ent tant que c##user1,
+	*grant select on syn to c##user2;
